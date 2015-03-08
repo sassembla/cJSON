@@ -32,6 +32,25 @@
 #include <ctype.h>
 #include "cJSON.h"
 
+#include "include/luajit-2.1/lua.h"
+#include "include/luajit-2.1/lauxlib.h"
+
+
+static int sig (lua_State *L) {
+	lua_pushnumber(L, 100);
+	return 1;
+}
+
+static const struct luaL_Reg mylib [] = {
+	{"tst", sig},
+	{NULL, NULL}
+};
+
+int luaopen_cJSON (lua_State *L) {
+	luaL_register(L, "cJSON", mylib);
+	return 1;
+}
+
 static const char *ep;
 
 const char *cJSON_GetErrorPtr(void) {return ep;}
